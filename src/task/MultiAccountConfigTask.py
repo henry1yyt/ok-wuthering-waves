@@ -74,6 +74,8 @@ class MultiAccountConfigTask(MultiAccountDailyTask):
                     with isolated_task_configs(self.executor.get_all_tasks()):
                         if index == 0:
                             WWOneTimeTask.run(self)
+                            # Another task or a previous run may have logged out.
+                            self.logged_in = False
                             self.ensure_main(time_out=100)
                             self._switch_to_login()
                         self.info_set('当前账号', display_account(account['account_key']))
